@@ -36,12 +36,17 @@ public class LoginController {
                 response.addCookie(cookie);
             }
             request.getSession().setAttribute("user",list.get(0));
-            request.setAttribute("userInfo",list.get(0));
-            return "service/main";
+            return "redirect:/main";
         }else{
             request.setAttribute("message","用户名或密码错误！");
             return "index";
         }
+    }
+
+    @RequestMapping(value = "/main")
+    public String mainHtml(HttpServletRequest request){
+        request.setAttribute("userInfo",request.getSession().getAttribute("user"));
+        return "service/main";
     }
 
     @RequestMapping(value = "/Timeout")

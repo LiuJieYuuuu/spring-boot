@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>基本信息</title>
+    <link rel="stylesheet" href="../layui/css/layui.css" th:href="@{/layui/css/layui.css}">
+    <script src="../layui/layui.js" th:src="@{/layui/layui.js}"></script>
+</head>
+<body>
+    <div class="layui-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this">基本信息</li>
+            <li>更改密码</li>
+            <li>更换头像</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">内容1</div>
+            <div class="layui-tab-item">内容2</div>
+            <div class="layui-tab-item">
+                
+            </div>
+        </div>
+    </div>
+    <script>
+        layui.use(['element'],function(){
+            var element=layui.element;
+        })
+    </script>
+</body>
+</html>

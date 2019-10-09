@@ -59,7 +59,7 @@
 						<li class="layui-nav-item">
 							<a href="#">操作</a>
 							<dl class="layui-nav-child">
-								<dd><a href="#">个人信息</a></dd>
+								<dd><a href="javascript:;" onclick="basicInfo()">个人信息</a></dd>
 								<dd><a href="#" th:href="@{/logout}">退出</a></dd>
 							</dl>
 						</li>
@@ -114,7 +114,7 @@
 
 		</div>
 		<script src="../layui/layui.js" th:src="@{/layui/layui.js}"></script>
-		<script>
+		<script th:inline="javascript">
 			var layer, form, element,$;
 			layui.use(['layer', 'form', 'element'], function() {
 				layer = layui.layer;
@@ -122,6 +122,15 @@
 				element = layui.element;
 				$=layui.$;
 			});
+			function basicInfo(){
+				var href=[[${root}]];
+                layer.open({
+                    type: 2,
+                    title: "个人信息",
+                    area: ['60%', '60%'],
+                    content: href+"/toUserInfo" //iframe的url，no代表不显示滚动条
+                });
+			}
 		</script>
 	</body>
 </html>
