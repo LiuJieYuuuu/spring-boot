@@ -45,6 +45,7 @@ public class LoginController {
 
     @RequestMapping(value = "/main")
     public String mainHtml(HttpServletRequest request){
+        request.setAttribute("root",request.getContextPath());
         request.setAttribute("userInfo",request.getSession().getAttribute("user"));
         return "service/main";
     }

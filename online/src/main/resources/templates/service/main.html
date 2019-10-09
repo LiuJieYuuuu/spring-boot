@@ -53,15 +53,14 @@
 						</li>
 					</ul>
 					<ul class="layui-nav layui-layout-right">
-						<li class="layui-nav-item"><a href="javascript:;">
-							<img src="../img/logo.JPG" class="layui-nav-img" th:src="@{/img/{userInfo.image}}"><span th:text="${userInfo.username}"></span></a>
-						</li>
 						<li class="layui-nav-item">
-							<a href="#">操作</a>
-							<dl class="layui-nav-child">
-								<dd><a href="javascript:;" onclick="basicInfo()">个人信息</a></dd>
-								<dd><a href="#" th:href="@{/logout}">退出</a></dd>
-							</dl>
+                            <a href="javascript:;">
+							    <img src="../img/logo.JPG" id="portrait" class="layui-nav-img" th:src="@{/img/}"><span th:text="${userInfo.username}"></span>
+                            </a>
+                            <dl class="layui-nav-child">
+                                <dd><a href="javascript:;" onclick="basicInfo()">个人信息</a></dd>
+                                <dd><a href="#" th:href="@{/logout}">退出</a></dd>
+                            </dl>
 						</li>
 					</ul>
 				</div>
@@ -121,6 +120,8 @@
 				form = layui.form;
 				element = layui.element;
 				$=layui.$;
+				var image=[[${userInfo.image}]];
+                $("#portrait").attr("src",$("#portrait").attr("src")+image);
 			});
 			function basicInfo(){
 				var href=[[${root}]];

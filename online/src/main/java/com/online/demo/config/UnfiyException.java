@@ -12,6 +12,8 @@ public class UnfiyException {
         String url=request.getRequestURI();
         request.setAttribute("message",e.getMessage());
         request.setAttribute("url",url);
+        System.out.println("error url : " + url);
+        e.printStackTrace();
         return "error";
     }
 }

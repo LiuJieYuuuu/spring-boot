@@ -17,14 +17,30 @@
             <div class="layui-tab-item layui-show">内容1</div>
             <div class="layui-tab-item">内容2</div>
             <div class="layui-tab-item">
-                
+                <button type="button" class="layui-btn" id="file">
+                    <i class="layui-icon">&#xe67c;</i>上传图片
+                </button>
             </div>
         </div>
     </div>
-    <script>
-        layui.use(['element'],function(){
+    <script th:inline="javascript">
+        var root=[[${root}]];
+        layui.use(['element','upload','layer'],function(){
             var element=layui.element;
-        })
+            element.init();
+            var layer=layui.layer;
+            var upload=layui.upload;
+            var uploadInst=upload.render({
+                elem:"#file",
+                url:root+"/fileUpload",
+                done:function(res){
+                    layer.alert(res);
+                },
+                error:function(){
+
+                }
+            });
+        });
     </script>
 </body>
 </html>
