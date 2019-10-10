@@ -123,14 +123,18 @@
 				var image=[[${userInfo.image}]];
                 $("#portrait").attr("src",$("#portrait").attr("src")+image);
 			});
+            var root=[[${root}]];
 			function basicInfo(){
-				var href=[[${root}]];
                 layer.open({
                     type: 2,
                     title: "个人信息",
                     area: ['60%', '60%'],
-                    content: href+"/toUserInfo" //iframe的url，no代表不显示滚动条
+                    content: root+"/toUserInfo" //iframe的url，no代表不显示滚动条
                 });
+			}
+			//更新头像
+			function updateImg(imgname){
+                $("#portrait").attr("src",root+"/img/"+imgname);
 			}
 		</script>
 	</body>

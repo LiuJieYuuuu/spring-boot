@@ -5,6 +5,19 @@
     <title>基本信息</title>
     <link rel="stylesheet" href="../layui/css/layui.css" th:href="@{/layui/css/layui.css}">
     <script src="../layui/layui.js" th:src="@{/layui/layui.js}"></script>
+    <style>
+        .proadd{
+            background-color:#F2F2F5;
+            width:250px;
+            text-align: center;
+        }
+        #img{
+            border-radius: 50%;
+        }
+        .proadd > * {
+            margin:10px;
+        }
+    </style>
 </head>
 <body>
     <div class="layui-tab">
@@ -17,27 +30,39 @@
             <div class="layui-tab-item layui-show">内容1</div>
             <div class="layui-tab-item">内容2</div>
             <div class="layui-tab-item">
-                <button type="button" class="layui-btn" id="file">
-                    <i class="layui-icon">&#xe67c;</i>上传图片
-                </button>
+                <div class="proadd">
+                    <button type="button" class="layui-btn" id="file">
+                        <i class="layui-icon">&#xe67c;</i>上传图片
+                    </button>
+                    <img id="img" width="150px" src="" th:src="@{/img/}" />
+                </div>
             </div>
         </div>
     </div>
     <script th:inline="javascript">
         var root=[[${root}]];
+        var imageUrl=[[${session.user.image}]];
         layui.use(['element','upload','layer'],function(){
             var element=layui.element;
             element.init();
             var layer=layui.layer;
             var upload=layui.upload;
+            var $=layui.$;
+            $("#img").attr("src",$("#img").attr("src")+imageUrl);
             var uploadInst=upload.render({
                 elem:"#file",
                 url:root+"/fileUpload",
                 done:function(res){
-                    layer.alert(res);
+                    if(res.code="200"){
+                        layer.alert("上传成功!",{icon:1,shade:0.3});
+                        $("#img").attr("src",root+"/img/"+res.img);
+                        window.parent.updateImg(res.img);
+                    }else{
+                        layer.alert("上传失败!",{icon:2,shade:0.3});
+                    }
                 },
-                error:function(){
-
+                error:function(e){
+                    console.log(e);
                 }
             });
         });

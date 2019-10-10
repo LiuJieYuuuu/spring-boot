@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -34,7 +35,7 @@ public class UserInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/fileUpload")
-    public String FileUpload(@RequestParam("file") MultipartFile multipartFile,HttpServletRequest request) throws IOException, URISyntaxException {
+    public Map<String,Object> FileUpload(@RequestParam("file") MultipartFile multipartFile,HttpServletRequest request) throws IOException, URISyntaxException {
         String name=multipartFile.getOriginalFilename();
         String lastType=name.substring(name.lastIndexOf(".")+1,name.length());
         String newName=UUIDUtils.getId()+"."+lastType;
@@ -46,10 +47,18 @@ public class UserInfoController {
         out.write(multipartFile.getBytes());
         out.flush();
         out.close();
-        if (loginDao.updateImageName(newName,email))
-            return "success";
-        else
-            return "fail";
+        Map<String,Object> json=new HashMap<String,Object>();
+        if (loginDao.updateImageName(newName,email)){
+            ((Map)request.getSession().getAttribute("user")).put("image",newName);
+            json.put("code","200");
+            json.put("msg","success");
+            json.put("img",newName);
+            return json;
+        }else {
+            json.put("code","500");
+            json.put("msg","fail");
+            return json;
+        }
     }
 
 }

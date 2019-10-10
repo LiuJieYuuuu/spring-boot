@@ -12,7 +12,10 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String url=request.getRequestURI();
         System.out.println(url);
-        if(url.matches(".*js|.*css|.*jpg|png|.*JPG|.*toLogin|.*Timeout|.*error|.*main.do") || url.equals(request.getContextPath())){
+        if(url.matches("/backManager/img/")){
+            return false;
+        }
+        else if(url.matches(".*js|.*css|.*jpg|png|.*JPG|.*toLogin|.*Timeout|.*error|.*main.do") || url.replaceAll("/","").equals(request.getContextPath().replaceAll("/",""))){
             return true;
         }else{
             Map<String,Object> userInfo= (Map<String, Object>) request.getSession().getAttribute("user");
