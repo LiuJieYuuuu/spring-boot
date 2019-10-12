@@ -1,6 +1,7 @@
 package com.online.demo.controller;
 
 import com.online.demo.dao.LoginDao;
+import com.online.demo.service.LoginService;
 import com.online.demo.util.MapUtils;
 import com.online.demo.util.UUIDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class UserInfoController {
     private String path;
 
     @Autowired
-    private LoginDao loginDao;
+    private LoginService loginService;
 
     @ResponseBody
     @RequestMapping(value = "/fileUpload")
@@ -48,7 +49,7 @@ public class UserInfoController {
         out.flush();
         out.close();
         Map<String,Object> json=new HashMap<String,Object>();
-        if (loginDao.updateImageName(newName,email)){
+        if (loginService.updateImageName(newName,email)){
             ((Map)request.getSession().getAttribute("user")).put("image",newName);
             json.put("code","200");
             json.put("msg","success");

@@ -71,29 +71,15 @@
 			<div class="layui-side layui-side-menu layui-bg-black">
 				<div class="layui-side-scroll">
 					<ul class="layui-nav layui-nav-tree">
-						<li class="layui-nav-item">
+						<li class="layui-nav-item" th:each="role : ${roles}">
 							<a href="#">
 								<i class="layui-icon layui-icon-add-1"></i>
-								<cite>列表一</cite>
+								<cite th:text="${role.name}">列表一</cite>
 							</a>
-							<dl class="layui-nav-child">
-								<dd>
-									<a target="main" href="https://www.layui.com/admin/std/dist/views/component/button/index.html">活动一</a>
-								</dd>
-								<dd>
-									<a target="main" href="https://www.layui.com/admin/std/dist/views/home/console.html">活动二</a>
-								</dd>
-								<dd>
-									<a target="main" href="https://www.layui.com/admin/std/dist/views/component/progress/index.html">活动三</a>
-								</dd>
+							<dl class="layui-nav-child" th:each="son : ${role.son}">
+								<a target="main" href="" th:href="${son.url}" th:text="${son.name}">活动一</a>
 							</dl>
 						</li>
-						<li class="layui-nav-item">
-							<a href="#">列表二</a>
-						</li>
-						<li class="layui-nav-item"><a href="#">列表三</a></li>
-						<li class="layui-nav-item"><a href="#">列表四</a></li>
-						<li class="layui-nav-item"><a href="#">列表五</a></li>
 					</ul>
 				</div>
 			</div>
@@ -118,7 +104,7 @@
 			layui.use(['layer', 'form', 'element'], function() {
 				layer = layui.layer;
 				form = layui.form;
-				element = layui.element;
+				element = layui.element;3
 				$=layui.$;
 				var image=[[${userInfo.image}]];
                 $("#portrait").attr("src",$("#portrait").attr("src")+image);

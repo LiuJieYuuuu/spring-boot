@@ -1,6 +1,10 @@
 package com.online.demo.controller;
 
 import com.online.demo.dao.LoginDao;
+import com.online.demo.entity.ParentModule;
+import com.online.demo.entity.SonModules;
+import com.online.demo.service.LoginService;
+import com.online.demo.util.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +21,7 @@ import java.util.Map;
 public class LoginController {
 
     @Autowired
-    LoginDao loginDao;
+    LoginService loginService;
 
     @RequestMapping(value="/toLogin")
     public String toLogin(HttpServletRequest request){
@@ -27,7 +32,7 @@ public class LoginController {
     @PostMapping(value = "/main.do")
     public String toMain(HttpServletRequest request, HttpServletResponse response, String username, String password,String remeber){
         request.setAttribute("root",request.getContextPath());
-        List<Map<String,Object>> list=loginDao.getUserInfo(username,password);
+        List<Map<String,Object>> list=loginService.getUserInfo(username,password);
         if(!list.isEmpty()){
             if (remeber!=null){
                 Cookie cookie = new Cookie("username",username);
@@ -47,6 +52,19 @@ public class LoginController {
     public String mainHtml(HttpServletRequest request){
         request.setAttribute("root",request.getContextPath());
         request.setAttribute("userInfo",request.getSession().getAttribute("user"));
+        Map<String,Object> userInfo= (Map<String, Object>) request.getSession().getAttribute("user");
+        List<Map<String,Object>> list=loginService.getModulesSon(MapUtils.getMapNullString(userInfo,"role_id"));
+        List<ParentModule> roleName=new ArrayList<>();
+        for (Map<String,Object> temp : list){
+            ParentModule p=new ParentModule(MapUtils.getMapNullString(temp,"t_p_id"),MapUtils.getMapNullString(temp,"t_p_name"));
+            if(roleName.contains(p)){
+                p.getSon().add(new SonModules(MapUtils.getMapNullString(temp,"t_s_id"),MapUtils.getMapNullString(temp,"t_s_name"),MapUtils.getMapNullString(temp,"t_s_url")));
+            }else{
+                roleName.add(p);
+                p.getSon().add(new SonModules(MapUtils.getMapNullString(temp,"t_s_id"),MapUtils.getMapNullString(temp,"t_s_name"),request.getContextPath()+MapUtils.getMapNullString(temp,"t_s_url")));
+            }
+        }
+        request.setAttribute("roles",roleName);
         return "service/main";
     }
 
