@@ -54,16 +54,7 @@ public class LoginController {
         request.setAttribute("userInfo",request.getSession().getAttribute("user"));
         Map<String,Object> userInfo= (Map<String, Object>) request.getSession().getAttribute("user");
         List<Map<String,Object>> list=loginService.getModulesSon(MapUtils.getMapNullString(userInfo,"role_id"));
-        List<ParentModule> roleName=new ArrayList<>();
-        for (Map<String,Object> temp : list){
-            ParentModule p=new ParentModule(MapUtils.getMapNullString(temp,"t_p_id"),MapUtils.getMapNullString(temp,"t_p_name"));
-            if(roleName.contains(p)){
-                p.getSon().add(new SonModules(MapUtils.getMapNullString(temp,"t_s_id"),MapUtils.getMapNullString(temp,"t_s_name"),MapUtils.getMapNullString(temp,"t_s_url")));
-            }else{
-                roleName.add(p);
-                p.getSon().add(new SonModules(MapUtils.getMapNullString(temp,"t_s_id"),MapUtils.getMapNullString(temp,"t_s_name"),request.getContextPath()+MapUtils.getMapNullString(temp,"t_s_url")));
-            }
-        }
+        List<ParentModule> roleName=MapUtils.getModilesInfo(list,request);
         request.setAttribute("roles",roleName);
         return "service/main";
     }

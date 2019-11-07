@@ -7,7 +7,7 @@ import java.util.Objects;
 public class ParentModule {
     private String id;
     private String name;
-    private List<SonModules> son=new ArrayList<>();
+    private List<SonModules> son;
 
     public String getId() {
         return id;
