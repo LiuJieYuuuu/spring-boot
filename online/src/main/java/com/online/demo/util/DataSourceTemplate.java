@@ -48,5 +48,7 @@ public class DataSourceTemplate {
     public int [] batchUpdate(String sql,List<Object[]> args){
         return jdbcTemplate.batchUpdate(sql,args);
     }
-
+    public int update(String sql,Object[] obj){
+        return jdbcTemplate.update(sql,obj);
+    }
 }

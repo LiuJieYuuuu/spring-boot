@@ -1,11 +1,10 @@
 package com.online.demo.controller;
 
-import com.online.demo.dao.LoginDao;
 import com.online.demo.entity.ParentModule;
-import com.online.demo.entity.SonModules;
 import com.online.demo.service.LoginService;
 import com.online.demo.util.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +20,9 @@ public class LoginController {
 
     @Autowired
     LoginService loginService;
+
+    @Value("${spring.servlet.multipart.location}")
+    private String path;
 
     @RequestMapping(value="/toLogin")
     public String toLogin(HttpServletRequest request){

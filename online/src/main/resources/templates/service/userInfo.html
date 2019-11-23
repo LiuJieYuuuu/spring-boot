@@ -51,7 +51,8 @@
             $("#img").attr("src",$("#img").attr("src")+imageUrl);
             var uploadInst=upload.render({
                 elem:"#file",
-                url:root+"/fileUpload",
+                url:root+"/user/fileUpload",
+                data:{email:[[${session.user.email}]]},
                 done:function(res){
                     if(res.code="200"){
                         layer.alert("上传成功!",{icon:1,shade:0.3});

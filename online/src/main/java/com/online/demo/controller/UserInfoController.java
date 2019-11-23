@@ -1,12 +1,12 @@
 package com.online.demo.controller;
 
-import com.online.demo.dao.LoginDao;
 import com.online.demo.service.LoginService;
 import com.online.demo.util.MapUtils;
 import com.online.demo.util.UUIDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,10 +15,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
+@RequestMapping(value = "/user")
 @Controller
 public class UserInfoController {
 
@@ -36,14 +36,26 @@ public class UserInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/fileUpload")
-    public Map<String,Object> FileUpload(@RequestParam("file") MultipartFile multipartFile,HttpServletRequest request) throws IOException, URISyntaxException {
+    public Map<String,Object> FileUpload(@RequestParam("file") MultipartFile multipartFile,HttpServletRequest request) throws IOException {
         String name=multipartFile.getOriginalFilename();
         String lastType=name.substring(name.lastIndexOf(".")+1,name.length());
         String newName=UUIDUtils.getId()+"."+lastType;
-        String email= MapUtils.getMapNullString((Map) request.getSession().getAttribute("user"),"email");
-        File file=new File(this.getClass().getResource("/").toURI().getPath()+File.separator+path+newName);
+        String email= request.getParameter("email");
+        //首先获取根目录：
+        File rootPath = new File(ResourceUtils.getURL("classpath:").getPath());
+        if(!rootPath.exists()) {
+            rootPath = new File("");
+        }
+        //将文件存放在与jar包同级的static的img目录下
+        File upload = new File(rootPath.getAbsolutePath(),path);
+        if(!upload.exists()) {
+            upload.mkdirs();
+        }
+        //创建文件
+        File file=new File(rootPath.getAbsolutePath()+path+newName);
         if (!file.exists())
             file.createNewFile();
+        //向该文件中输入数据
         BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));
         out.write(multipartFile.getBytes());
         out.flush();
